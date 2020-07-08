@@ -29,7 +29,6 @@ ville: {
 },
 numero: {
     type: String,
-    unique: true
 },
 pays: {
     type: String

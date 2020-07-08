@@ -12,7 +12,7 @@ const mongoose = require('mongoose');
 
 const Users = require('./models/users');
 
-const url = 'mongodb://localhost:27017/conFusion';
+const url = 'mongodb://<dbuser>:<G10passe@it123ku>@ds041357.mlab.com:41357/heroku_gvb91g71';
 const connect = mongoose.connect(url);
 
 connect.then((db) => {
