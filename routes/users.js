@@ -67,6 +67,27 @@ userRouter.route('/:id_users')
 })
 
 .post((req, res, next) => {
+    if(req.params.id_users=='login'){
+    Users.findOne({ email: req.body.email})
+    .then((user) => {
+        if (user != null) {
+            if(user.password==req.body.password){
+                res.statusCode = 200;
+                res.setHeader('Content-Type', 'application/json');
+                res.json(user);
+            }else{
+                res.statusCode = 403;
+                res.setHeader('Content-Type', 'application/json');
+                res.json('Access Error');
+            }
+           
+        }else{
+          res.statusCode = 403;
+          res.setHeader('Content-Type', 'application/json');
+          res.json('Email : '+req.body.email+' inexistant veuillez vous inscrire');
+        }
+    },(err) => next(err));
+        }
     Users.findById(req.params.id_users)
     .then((user) => {
         if (user != null) {
