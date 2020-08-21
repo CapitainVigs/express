@@ -7,7 +7,7 @@ var logger = require('morgan');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var loginRouter = require('./routes/login');
-var coursesRouter = require('./routes/coursesrouter');
+var coursesRouter = require('./routes/coursesRouter');
 
 // mongoose connection
 const mongoose = require('mongoose');

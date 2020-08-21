@@ -12,29 +12,29 @@ loginRouter.use(bodyParser.json());
 
 
 
-loginRouter.route('/login')
+loginRouter.route('/')
 .get((req,res,next) => {
     res.statusCode = 403;
     res.end('GET operation not supported on /Login');
 })
 .post((req, res, next) => {
-    
     Users.findOne({ email: req.body.email})
     .then((user) => {
         if (user != null) {
-            if(user.password==req.body.password){
-                res.statusCode = 200;
+            res.statusCode = 403;
                 res.setHeader('Content-Type', 'application/json');
-                res.json(user);
-            }else{
-                res.statusCode = 403;
-                res.setHeader('Content-Type', 'application/json');
-                res.text('Acces error');
-            }
-           
+                res.json('User deja creer ');
+        }else{
+            Users.create(req.body)
+            .then((dish) => {
+            console.log('User Created ', dish);
+            res.statusCode = 200;
+            res.setHeader('Content-Type', 'application/json');
+            res.json(dish);
+        }, (err) => next(err))
+        .catch((err) => next(err));
         }
     },(err) => next(err));
-        
 })
 .put((req, res, next) => {
     res.statusCode = 403;
