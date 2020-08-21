@@ -87,7 +87,7 @@ userRouter.route('/:id_users')
           res.json('Email : '+req.body.email+' inexistant veuillez vous inscrire');
         }
     },(err) => next(err));
-        }
+        }else{
     Users.findById(req.params.id_users)
     .then((user) => {
         if (user != null) {
@@ -105,12 +105,13 @@ userRouter.route('/:id_users')
             }, (err) => next(err));
         }
         else {
-            err = new Error('Dish ' + req.params.id_users + ' not found');
+            err = new Error('User' + req.params.id_users + ' not found');
             err.status = 404;
             return next(err);
         }
     }, (err) => next(err))
     .catch((err) => next(err));
+    }
 })
 .put((req, res, next) => {
     res.statusCode = 403;
