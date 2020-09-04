@@ -42,19 +42,24 @@ coursesRouter.route('/')
     .catch((err) => next(err));    
 });
 
-coursesRouter.route('/:userId')
+coursesRouter.route('/find')
 .get((req,res,next) => {
-    Courses.findById(req.params.userId)
-    .then((register) => {
+    Courses.find({})
+    .then((Courses) => {
         res.statusCode = 200;
         res.setHeader('Content-Type', 'application/json');
-        res.json(register);
+        res.json(Courses);
     }, (err) => next(err))
     .catch((err) => next(err));
 })
 .post((req, res, next) => {
-    res.statusCode = 403;
-    res.end('POST operation not supported on /register/'+ req.params.userId);
+    Courses.find(req.body)
+    .then((courses) => {
+        res.statusCode = 200;
+        res.setHeader('Content-Type', 'application/json');
+        res.json(courses);
+    }, (err) => next(err))
+    .catch((err) => next(err));
 })
 .put((req, res, next) => {
     Courses.findByIdAndUpdate(req.params.userId, {
