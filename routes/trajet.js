@@ -55,7 +55,7 @@ trajetRouter.route('/find')
     .catch((err) => next(err));
 })
 .post((req, res, next) => {
-    trajet.find(req.body).populate('trajets.localisations')
+    trajet.find(req.body).populate('arrivee').populate('depart')
     .then((trajet) => {
         res.statusCode = 200;
         res.setHeader('Content-Type', 'application/json');

@@ -21,6 +21,10 @@ const coursesSchema = new Schema({
         type: Currency,
         min: 0
     },
+    userId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'users'
+    }
    
 },{
     timestamps: true

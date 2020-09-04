@@ -34,7 +34,7 @@ loginRouter.route('/')
         }, (err) => next(err))
         .catch((err) => next(err));
         }
-    },(err) => next(err));
+    }   ,(err) => next(err));
 })
 .put((req, res, next) => {
     res.statusCode = 403;

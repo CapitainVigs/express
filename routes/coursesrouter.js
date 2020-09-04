@@ -7,6 +7,17 @@ const Courses = require('../models/courses');
 const coursesRouter = express.Router();
 
 coursesRouter.use(bodyParser.json());
+coursesRouter.route('/:userId')
+.get((req,res,next) => {
+    Courses.findById(req.params.userId)
+    .populate('userId')
+    .then((register) => {
+        res.statusCode = 200;
+        res.setHeader('Content-Type', 'application/json');
+        res.json(register);
+    }, (err) => next(err))
+    .catch((err) => next(err));
+})
 
 coursesRouter.route('/')
 .get((req,res,next) => {
