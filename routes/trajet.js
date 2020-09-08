@@ -10,7 +10,6 @@ const trajetRouter = express.Router();
 trajetRouter.use(bodyParser.json());
 
 
-
 trajetRouter.route('/')
 .get((req,res,next) => {
     trajet.find({})
