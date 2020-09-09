@@ -10,6 +10,7 @@ var loginRouter = require('./routes/login');
 var trajetRouter = require('./routes/trajet');
 var localisationRouter = require('./routes/localisation');
 var coursesRouter = require('./routes/coursesrouter');
+var reservationRouter = require('./routes/reservation');
 
 // mongoose connection
 const mongoose = require('mongoose');
@@ -45,6 +46,7 @@ app.use('/login', loginRouter);
 app.use('/localisation', localisationRouter);
 app.use('/trajet',trajetRouter);
 app.use('/courses', coursesRouter);
+app.use('/reservation', reservationRouter);
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));
