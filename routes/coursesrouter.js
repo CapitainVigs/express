@@ -9,8 +9,7 @@ const coursesRouter = express.Router();
 coursesRouter.use(bodyParser.json());
 coursesRouter.route('/:userId')
 .get((req,res,next) => {
-    Courses.findById(req.params.userId)
-    .populate('userId')
+    Courses.find({userId:req.params.userId})
     .then((register) => {
         res.statusCode = 200;
         res.setHeader('Content-Type', 'application/json');

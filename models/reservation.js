@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const reservationSchema = new Schema({
-   trajet: { type: Schema.Types.ObjectId, ref: 'Trajet' },
+   trajet: { type: Schema.Types.ObjectId, ref: 'trajet' },
    montant: {
     type: Number
    },
@@ -11,7 +11,8 @@ const reservationSchema = new Schema({
    },
    nbplace:{
     type: Number
-   }
+   },
+   iduser: { type: Schema.Types.ObjectId, ref: 'users' },
 }
 );
 

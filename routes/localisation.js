@@ -46,7 +46,19 @@ localisationRouter.route('/')
 });
 
 
-
+localisationRouter.route('/add')
+.get((req,res,next) => {
+    Localisation.create(req.body)
+    .then((Localisation) => {
+        if (Localisation != null) {
+            console.log(Localisation);
+            res.statusCode = 200;
+            res.setHeader('Content-Type', 'application/json');
+            res.json(Localisation);
+        }
+    }, (err) => next(err))
+    .catch((err) => next(err));
+});
 
 localisationRouter.route('/find')
 .get((req,res,next) => {

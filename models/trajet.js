@@ -13,7 +13,8 @@ const trajetSchema = new Schema({
    },
    nbplace:{
     type: Number
-   }
+   },
+   iduser: { type: Schema.Types.ObjectId, ref: 'users' },
 }
 );
 

@@ -45,7 +45,7 @@ trajetRouter.route('/')
 });
 trajetRouter.route('/find')
 .get((req,res,next) => {
-    trajet.find( {})
+    trajet.find( {}).populate('arrivee').populate('depart')
     .then((trajets) => {
         res.statusCode = 200;
         res.setHeader('Content-Type', 'application/json');

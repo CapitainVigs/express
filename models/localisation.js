@@ -12,7 +12,8 @@ const localisationSchema = new Schema({
     required: false
     },
    coor_y: {
-    type: String
+    type: String,
+    required: false
    }
 }
 );
