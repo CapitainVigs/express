@@ -11,6 +11,7 @@ var trajetRouter = require('./routes/trajet');
 var localisationRouter = require('./routes/localisation');
 var coursesRouter = require('./routes/coursesrouter');
 var reservationRouter = require('./routes/reservation');
+var vehiculeRouter = require('./routes/vehicule');
 
 // mongoose connection
 const mongoose = require('mongoose');
@@ -47,6 +48,7 @@ app.use('/localisation', localisationRouter);
 app.use('/trajet',trajetRouter);
 app.use('/courses', coursesRouter);
 app.use('/reservation', reservationRouter);
+app.use('/vehicule', vehiculeRouter);
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));
