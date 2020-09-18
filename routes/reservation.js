@@ -35,9 +35,9 @@ reservationRouter.route('/add')
     .catch((err) => next(err));
 })
 
-reservationRouter.route('/:idTrajet')
+reservationRouter.route('/:iduser')
 .get((req,res,next) => {
-    reservation.find(req.params.idTrajet).populate( {path:'trajet', populate:{path:'depart'}}).populate( {path:'trajet', populate:{path:'arrivee'}})
+    reservation.find({iduser:req.params.iduser}).populate( {path:'trajet', populate:{path:'depart'}}).populate( {path:'trajet', populate:{path:'arrivee'}})
     .then((reservation) => {
         res.statusCode = 200;
         res.setHeader('Content-Type', 'application/json');

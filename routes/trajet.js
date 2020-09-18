@@ -43,9 +43,31 @@ trajetRouter.route('/')
     }, (err) => next(err))
     .catch((err) => next(err));
 });
+
+
 trajetRouter.route('/find')
 .get((req,res,next) => {
     trajet.find( {}).populate('arrivee').populate('depart')
+    .then((trajets) => {
+        res.statusCode = 200;
+        res.setHeader('Content-Type', 'application/json');
+        res.json(trajets);
+    }, (err) => next(err))
+    .catch((err) => next(err));
+})
+.post((req, res, next) => {
+    trajet.find(req.body).populate('arrivee').populate('depart')
+    .then((trajet) => {
+        res.statusCode = 200;
+        res.setHeader('Content-Type', 'application/json');
+        res.json(trajet);
+    }, (err) => next(err))
+    .catch((err) => next(err));
+})
+
+trajetRouter.route('/find/:idconducteur')
+.get((req,res,next) => {
+    trajet.find({iduser:req.params.idconducteur}).populate('arrivee').populate('depart').populate('iduser')
     .then((trajets) => {
         res.statusCode = 200;
         res.setHeader('Content-Type', 'application/json');

@@ -30,7 +30,7 @@ const vehiculeSchema = new Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'vehicules'
     },
-    iduser: { type: Schema.Types.ObjectId, ref: 'users' },
+    iduser: { type: Schema.Types.ObjectId, ref: 'User' },
 
 }, {
     timestamps: true
