@@ -11,8 +11,16 @@ const trajetSchema = new Schema({
    prix: {
     type: String
    },
+   etat: {
+    type: Number,
+    default: 0
+   },
    nbplace:{
     type: Number
+   },
+   nbplace_reserver:{
+    type: Number,
+    default: 0
    },
    iduser: { type: Schema.Types.ObjectId, ref: 'User' },
 }

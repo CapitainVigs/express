@@ -12,10 +12,15 @@ const reservationSchema = new Schema({
    nbplace:{
     type: Number
    },
-   iduser: { type: Schema.Types.ObjectId, ref: 'users' },
+   iduser: { type: Schema.Types.ObjectId, ref: 'User' },
 }
 );
 
 var reservation = mongoose.model('reservation', reservationSchema);
 
 module.exports = reservation;
+
+
+
+
+

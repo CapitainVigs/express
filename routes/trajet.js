@@ -45,6 +45,34 @@ trajetRouter.route('/')
 });
 
 
+
+trajetRouter.route('/:idtrajet')
+.get((req,res,next) => {
+    trajet.findById(req.params.idtrajet).populate('arrivee').populate('depart').populate('iduser')
+    .then((trajet) => {
+        res.statusCode = 200;
+        res.setHeader('Content-Type', 'application/json');
+        res.json(trajet);
+    }, (err) => next(err))
+    .catch((err) => next(err));
+})
+.put((req, res, next) => {
+    trajet.findById(req.params.idtrajet)
+    .then((trajet) => {
+        if(trajet != null){
+                trajet.nbplace_reserver=req.body.nombre_place;
+                trajet.save()
+        }
+        else{
+            err = new Error('Trajet' + req.params.idtrajet + ' not found');
+            err.status = 404;
+            return next(err); 
+        }
+    }, (err) => next(err))
+    .catch((err) => next(err));
+})
+
+
 trajetRouter.route('/find')
 .get((req,res,next) => {
     trajet.find( {}).populate('arrivee').populate('depart')
