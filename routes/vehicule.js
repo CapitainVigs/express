@@ -25,10 +25,10 @@ vehiculeRouter.route('/').get((req, res) => {
     })
 })
 
-
 // Get all véhicule by user
-vehiculeRouter.route('/user/:id').get((req, res) => {
-    vehicule.findById(req.params.iduser, (error, data) => {
+vehiculeRouter.route('/user/:iduser').get((req, res) => {
+    
+    vehicule.find({ 'iduser': req.params.iduser   }, (error, data) => {
         if (error) {
             return next(error)
         } else {
