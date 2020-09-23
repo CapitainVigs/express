@@ -28,15 +28,13 @@ vehiculeRouter.route('/').get((req, res) => {
 // Get all véhicule by user
 vehiculeRouter.route('/user/:iduser').get((req, res) => {
     
-    vehicule.find({ 'iduser': req.params.iduser   }, (error, data) => {
-        if (error) {
-            return next(error)
-        } else {
-            res.statusCode = 200;
-            res.setHeader('Content-Type', 'application/json');
-            res.json(data)
-        }
-    })
+    vehicule.find({iduser:req.params.iduser})
+    .then((vehicule) => {
+        res.statusCode = 200;
+        res.setHeader('Content-Type', 'application/json');
+        res.json(vehicule);
+    }, (err) => next(err))
+    .catch((err) => next(err));
 })
 
 
