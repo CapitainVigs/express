@@ -47,6 +47,16 @@ trajetRouter.route('/')
 
 
 trajetRouter.route('/:idtrajet')
+.post((req, res, next) => {
+    trajet.create(req.body)
+    .then((trajet) => {
+        console.log('Trajet Created ', trajet);
+        res.statusCode = 200;
+        res.setHeader('Content-Type', 'application/json');
+        res.json(trajet);
+    }, (err) => next(err))
+    .catch((err) => next(err));
+})
 .get((req,res,next) => {
     trajet.findById(req.params.idtrajet).populate('arrivee').populate('depart').populate('iduser')
     .then((trajet) => {
@@ -60,7 +70,12 @@ trajetRouter.route('/:idtrajet')
     trajet.findById(req.params.idtrajet)
     .then((trajet) => {
         if(trajet != null){
+            if(req.body.nombre_place)
                 trajet.nbplace_reserver=req.body.nombre_place;
+
+            if(req.body.etat)
+                trajet.etat= req.body.etat;
+
                 trajet.save()
         }
         else{
