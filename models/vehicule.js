@@ -26,11 +26,7 @@ const vehiculeSchema = new Schema({
         type: Number,
         min: 0
     },
-    idVehicule: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'vehicules'
-    },
-    iduser: { type: Schema.Types.ObjectId, ref: 'User' },
+    iduser: { type: Schema.Types.ObjectId, ref: 'User' }
 
 }, {
     timestamps: true

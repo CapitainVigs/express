@@ -13,10 +13,25 @@ var coursesRouter = require('./routes/coursesrouter');
 var reservationRouter = require('./routes/reservation');
 var vehiculeRouter = require('./routes/vehicule');
 
+
+
 // mongoose connection
 const mongoose = require('mongoose');
 
 const Users = require('./models/users');
+
+const  authJwt  = require('./routes/authJwt'); 
+// Moucharafou code 
+const cors = require("cors");
+var corsOptions = {
+  origin: "http://localhost:3000"
+};
+
+
+
+
+
+// Moucharafou code
 
 //const url ='mongodb://localhost:27017/conFusion';
 //const url ='mongodb://root:LGf-75G-JYm-sMb@ds041357.mlab.com:41357/heroku_gvb91g71';
@@ -25,6 +40,7 @@ const connect = mongoose.connect(url);
 
 connect.then((db) => {
     console.log("Connected correctly to server");
+    console.log("Les roles créé avec ===:: Connected correctly to server");
 }, (err) => { console.log(err); });
 
 
@@ -32,6 +48,9 @@ connect.then((db) => {
 var app = express();
 
 // view engine setup
+
+app.use(cors(corsOptions));
+
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
@@ -42,17 +61,30 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
+app.use('/users',   usersRouter);
 app.use('/login', loginRouter);
+//app.post('/login',[verifySignUp.checkDuplicateUsernameOrEmail, verifySignUp.checkRolesExisted], loginRouter);
 app.use('/localisation', localisationRouter);
-app.use('/trajet',trajetRouter);
-app.use('/courses', coursesRouter);
+app.use('/trajet', trajetRouter);
+app.use('/courses',   coursesRouter);
 app.use('/reservation', reservationRouter);
-app.use('/vehicule', vehiculeRouter);
+app.use('/vehicule', [authJwt.verifyToken], vehiculeRouter);
+
+
+
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));
 });
+
+app.use(function(req, res, next) {
+  res.header(
+    "Access-Control-Allow-Headers",
+    "x-access-token, Origin, Content-Type, Accept"
+  );
+  next();
+});
+
 
 // error handler
 app.use(function(err, req, res, next) {
