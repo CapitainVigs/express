@@ -85,6 +85,39 @@ userRouter.route('/:id_users')
     if(req.params.id_users=='login'){
     Users.findOne({ email: req.body.email})
     .then((user) => {
+
+        if (!user) {
+            return res.status(404).send({ message: "Utilisateur non trouvé." });
+          }
+
+        var passwordIsValid = bcrypt.compareSync(
+            req.body.password,
+            user.password
+        );
+
+        if (!passwordIsValid) {
+            return res.status(401).send({
+                accessToken: null,
+                message: "Mot de passe incorrect!"
+            });
+        }
+        var token = jwt.sign({ id: user._id }, config.secret, {
+            expiresIn: 86400 // 24 hours
+        });
+
+        res.status(200).json({
+            id: user._id,
+            name: user.name,
+            email: user.email,
+            nom: user.nom,
+            prenoms: user.prenoms,
+            profession: user.profession,
+            ville:user.ville,
+            numero:user.numero,
+            pays: user.pays,
+            accessToken: token
+        });
+        /* 
         if (user != null) {
             if(user.password==req.body.password){
                 res.statusCode = 200;
@@ -100,7 +133,7 @@ userRouter.route('/:id_users')
           res.statusCode = 403;
           res.setHeader('Content-Type', 'application/json');
           res.json('Email : '+req.body.email+' inexistant veuillez vous inscrire');
-        }
+        } */
     },(err) => next(err));
         }else{
     Users.findById(req.params.id_users)
