@@ -24,7 +24,7 @@ const  authJwt  = require('./routes/authJwt');
 // Moucharafou code 
 const cors = require("cors");
 var corsOptions = {
-  origin: "http://localhost:3000"
+  origin: "*"
 };
 
 
