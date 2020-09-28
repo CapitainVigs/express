@@ -11,7 +11,7 @@ userRouter.use(bodyParser.json());
 
 var jwt = require("jsonwebtoken");
 var bcrypt = require('bcryptjs');
-
+var config =require("../config/auth.config");
 
 userRouter.route('/')
 .get((req,res,next) => {
@@ -24,6 +24,10 @@ userRouter.route('/')
     .catch((err) => next(err));
 })
 .post((req, res, next) => {
+    var token = jwt.sign({ id: user._id }, config.secret, {
+        expiresIn: 86400 // 24 hours
+    });
+
     Users.create(
         {
             name: req.body.name,
@@ -35,7 +39,7 @@ userRouter.route('/')
             ville: req.body.ville,
             numero: req.body.numero,
             pays: req.body.pays,
-
+            
         }
     )
     .then((dish) => {
@@ -106,7 +110,7 @@ userRouter.route('/:id_users')
         });
 
         res.status(200).json({
-            id: user._id,
+            _id: user._id,
             name: user.name,
             email: user.email,
             nom: user.nom,

@@ -24,7 +24,7 @@ const  authJwt  = require('./routes/authJwt');
 // Moucharafou code 
 const cors = require("cors");
 var corsOptions = {
-  origin: "*"
+  origin: "http://localhost:3000"
 };
 
 
@@ -61,7 +61,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
-app.use('/users',   usersRouter);
+app.use('/users',  usersRouter);
 app.use('/login', loginRouter);
 //app.post('/login',[verifySignUp.checkDuplicateUsernameOrEmail, verifySignUp.checkRolesExisted], loginRouter);
 app.use('/localisation', localisationRouter);
