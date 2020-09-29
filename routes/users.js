@@ -91,7 +91,7 @@ userRouter.route('/:id_users')
     .then((user) => {
 
         if (!user) {
-            return res.status(404).send({ message: "Utilisateur non trouvé." });
+            return res.status(404).send({ message: "Utilisateur inexistant veuillez vous inscrire." });
           }
 
         var passwordIsValid = bcrypt.compareSync(

@@ -12,7 +12,7 @@ trajetRouter.use(bodyParser.json());
 
 trajetRouter.route('/')
 .get((req,res,next) => {
-    trajet.find({})
+    trajet.find( {}).populate('arrivee').populate('depart')
     .then((trajet) => {
         res.statusCode = 200;
         res.setHeader('Content-Type', 'application/json');
@@ -29,10 +29,14 @@ trajetRouter.route('/')
         res.json(trajet);
     }, (err) => next(err))
     .catch((err) => next(err));
-})
-.put((req, res, next) => {
-    res.statusCode = 403;
-    res.end('PUT operation not supported on /Localisationes');
+}).put((req, res, next) => {
+    trajet.find(req.body).populate('arrivee').populate('depart')
+    .then((trajet) => {
+        res.statusCode = 200;
+        res.setHeader('Content-Type', 'application/json');
+        res.json(trajet);
+    }, (err) => next(err))
+    .catch((err) => next(err));
 })
 .delete((req, res, next) => {
     trajet.deleteMany({})
@@ -88,16 +92,7 @@ trajetRouter.route('/:idtrajet')
 })
 
 
-trajetRouter.route('/find')
-.get((req,res,next) => {
-    trajet.find( {}).populate('arrivee').populate('depart')
-    .then((trajets) => {
-        res.statusCode = 200;
-        res.setHeader('Content-Type', 'application/json');
-        res.json(trajets);
-    }, (err) => next(err))
-    .catch((err) => next(err));
-})
+trajetRouter.route('/find/')
 .post((req, res, next) => {
     trajet.find(req.body).populate('arrivee').populate('depart')
     .then((trajet) => {
