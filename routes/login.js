@@ -4,7 +4,6 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const config = require("../config/auth.config");
 const Users = require('../models/users');
-
 const loginRouter = express.Router();
 
 loginRouter.use(bodyParser.json());
@@ -22,44 +21,52 @@ loginRouter.route('/')
     .post((req, res, next) => {
         Users.findOne({ email: req.body.email })
             .then((user) => {
-                /* if (user != null) {
-                    res.statusCode = 403;
-                    res.setHeader('Content-Type', 'application/json');
-                    res.json('User deja creer ');
-                    
-                } */
-
                 if (!user) {
                     return res.status(404).send({ message: "Utilisateur non trouvé." });
                   }
-
+        
                 var passwordIsValid = bcrypt.compareSync(
                     req.body.password,
                     user.password
                 );
-
+        
                 if (!passwordIsValid) {
                     return res.status(401).send({
                         accessToken: null,
                         message: "Mot de passe incorrect!"
                     });
                 }
-                var token = jwt.sign({ id: user._id }, config.secret, {
+        
+                let userConnect = {
+                    "_id": user._id,
+                    "name": user.name,
+                    "email": user.email,
+                    "nom": user.nom,
+                    "numero": user.numero,
+                    "pays": user.pays,
+                    "prenoms": user.prenoms,
+                    "ville": user.ville,
+                    "profession": user.profession
+                }
+                var token = jwt.sign({ userConnect: userConnect }, config.secret, {
                     expiresIn: 86400 // 24 hours
                 });
-
+        
                 res.status(200).json({
-                    id: user._id,
+                    _id: user._id,
                     name: user.name,
                     email: user.email,
                     nom: user.nom,
                     prenoms: user.prenoms,
                     profession: user.profession,
-                    ville:user.ville,
-                    numero:user.numero,
+                    ville: user.ville,
+                    numero: user.numero,
                     pays: user.pays,
-                    accessToken: token
+                    accessToken: token,
+                    trajet_actif_id:user.trajet_actif_id
                 });
+
+               
 
             })
     })

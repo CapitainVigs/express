@@ -12,6 +12,7 @@ var localisationRouter = require('./routes/localisation');
 var coursesRouter = require('./routes/coursesrouter');
 var reservationRouter = require('./routes/reservation');
 var vehiculeRouter = require('./routes/vehicule');
+var userRouter = require('./routes/users');
 
 
 
@@ -61,13 +62,14 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
-app.use('/users',  usersRouter);
+app.use('/users', [authJwt.verifyToken], usersRouter);
 app.use('/login', loginRouter);
+app.use('/register', userRouter);
 //app.post('/login',[verifySignUp.checkDuplicateUsernameOrEmail, verifySignUp.checkRolesExisted], loginRouter);
-app.use('/localisation', localisationRouter);
-app.use('/trajet', trajetRouter);
-app.use('/courses',   coursesRouter);
-app.use('/reservation', reservationRouter);
+app.use('/localisation', [authJwt.verifyToken], localisationRouter);
+app.use('/trajet', [authJwt.verifyToken], trajetRouter);
+app.use('/courses', [authJwt.verifyToken],  coursesRouter);
+app.use('/reservation', [authJwt.verifyToken], reservationRouter);
 app.use('/vehicule', [authJwt.verifyToken], vehiculeRouter);
 
 

@@ -33,6 +33,7 @@ numero: {
 pays: {
     type: String
 },
+trajet_actif_id: { type: Schema.Types.ObjectId, ref: 'trajet',default: null }
 },{
     timestamps: true
 });

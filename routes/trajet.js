@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 
 const trajet = require('../models/trajet');
+const Users = require('../models/users');
 
 const trajetRouter = express.Router();
 
@@ -23,6 +24,20 @@ trajetRouter.route('/')
 .post((req, res, next) => {
     trajet.create(req.body)
     .then((trajet) => {
+
+        Users.findById(trajet.iduser)
+        .then((user) => {
+            if (user != null) {
+                user.trajet_actif_id=trajet._id;
+                user.save()
+            }
+            else {
+                err = new Error('User ' + req.params.id_users + ' not found');
+                err.status = 404;
+                return next(err);
+            }
+        })
+
         console.log('Trajet Created ', trajet);
         res.statusCode = 200;
         res.setHeader('Content-Type', 'application/json');

@@ -7,12 +7,13 @@ const reservationSchema = new Schema({
     type: Number
    },
    etat: {
-    type: String
+      type: Number,
+      default: 0
    },
    nbplace:{
     type: Number
    },
-   iduser: { type: Schema.Types.ObjectId, ref: 'User' },
+   iduser: { type: Schema.Types.ObjectId, ref: 'User' }
 }
 );
 

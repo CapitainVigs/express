@@ -9,9 +9,7 @@ const userRouter = express.Router();
 
 userRouter.use(bodyParser.json());
 
-var jwt = require("jsonwebtoken");
 var bcrypt = require('bcryptjs');
-var config =require("../config/auth.config");
 
 userRouter.route('/')
 .get((req,res,next) => {
@@ -24,10 +22,6 @@ userRouter.route('/')
     .catch((err) => next(err));
 })
 .post((req, res, next) => {
-    var token = jwt.sign({ id: user._id }, config.secret, {
-        expiresIn: 86400 // 24 hours
-    });
-
     Users.create(
         {
             name: req.body.name,
@@ -39,7 +33,7 @@ userRouter.route('/')
             ville: req.body.ville,
             numero: req.body.numero,
             pays: req.body.pays,
-            
+
         }
     )
     .then((dish) => {
@@ -84,62 +78,7 @@ userRouter.route('/:id_users')
     }, (err) => next(err))
     .catch((err) => next(err));
 })
-
 .post((req, res, next) => {
-    if(req.params.id_users=='login'){
-    Users.findOne({ email: req.body.email})
-    .then((user) => {
-
-        if (!user) {
-            return res.status(404).send({ message: "Utilisateur inexistant veuillez vous inscrire." });
-          }
-
-        var passwordIsValid = bcrypt.compareSync(
-            req.body.password,
-            user.password
-        );
-
-        if (!passwordIsValid) {
-            return res.status(401).send({
-                accessToken: null,
-                message: "Mot de passe incorrect!"
-            });
-        }
-        var token = jwt.sign({ id: user._id }, config.secret, {
-            expiresIn: 86400 // 24 hours
-        });
-
-        res.status(200).json({
-            _id: user._id,
-            name: user.name,
-            email: user.email,
-            nom: user.nom,
-            prenoms: user.prenoms,
-            profession: user.profession,
-            ville:user.ville,
-            numero:user.numero,
-            pays: user.pays,
-            accessToken: token
-        });
-        /* 
-        if (user != null) {
-            if(user.password==req.body.password){
-                res.statusCode = 200;
-                res.setHeader('Content-Type', 'application/json');
-                res.json(user);
-            }else{
-                res.statusCode = 403;
-                res.setHeader('Content-Type', 'application/json');
-                res.json('Access Error');
-            }
-           
-        }else{
-          res.statusCode = 403;
-          res.setHeader('Content-Type', 'application/json');
-          res.json('Email : '+req.body.email+' inexistant veuillez vous inscrire');
-        } */
-    },(err) => next(err));
-        }else{
     Users.findById(req.params.id_users)
     .then((user) => {
         if (user != null) {
@@ -163,11 +102,19 @@ userRouter.route('/:id_users')
         }
     }, (err) => next(err))
     .catch((err) => next(err));
-    }
 })
 .put((req, res, next) => {
-    res.statusCode = 403;
-    res.end('PUT operation not supported on /dishes');
+    Users.findById(req.params.id_users)
+    .then((user) => {
+        if(user != null){
+            user.trajet_id=req.body.trajet_id
+        }
+        else{
+            err = new Error('User' + req.params.id_users + ' not found');
+            err.status = 404;
+            return next(err); 
+        }
+})
 })
 .delete((req, res, next) => {
     Users.deleteMany({})
