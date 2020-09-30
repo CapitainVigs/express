@@ -49,7 +49,6 @@ connect.then((db) => {
 var app = express();
 
 // view engine setup
-
 app.use(cors(corsOptions));
 
 app.set('views', path.join(__dirname, 'views'));
@@ -66,7 +65,7 @@ app.use('/users', [authJwt.verifyToken], usersRouter);
 app.use('/login', loginRouter);
 app.use('/register', userRouter);
 //app.post('/login',[verifySignUp.checkDuplicateUsernameOrEmail, verifySignUp.checkRolesExisted], loginRouter);
-app.use('/localisation', [authJwt.verifyToken], localisationRouter);
+app.use('/localisation',  localisationRouter);
 app.use('/trajet', [authJwt.verifyToken], trajetRouter);
 app.use('/courses', [authJwt.verifyToken],  coursesRouter);
 app.use('/reservation', [authJwt.verifyToken], reservationRouter);

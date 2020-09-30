@@ -21,6 +21,16 @@ reservationRouter.route('/')
     }, (err) => next(err))
     .catch((err) => next(err));
 })
+.post((req,res,next) => {
+    reservation.find(req.body).populate( {path:'trajet', populate:{path:'depart'}}).populate( {path:'trajet', populate:{path:'arrivee'}}).populate('iduser')
+    .then((reservation) => {
+        res.statusCode = 200;
+        res.setHeader('Content-Type', 'application/json');
+        res.json(reservation);
+    }, (err) => next(err))
+    .catch((err) => next(err));
+})
+
 
 
 
@@ -46,14 +56,10 @@ reservationRouter.route('/:iduser')
     .catch((err) => next(err));
 })
 //reservation trajet id sent from iduser var
-.post((req,res,next) => {
-    reservation.find({trajet:req.params.iduser}).populate( {path:'trajet', populate:{path:'depart'}}).populate( {path:'trajet', populate:{path:'arrivee'}}).populate('iduser')
-    .then((reservation) => {
-        res.statusCode = 200;
-        res.setHeader('Content-Type', 'application/json');
-        res.json(reservation);
-    }, (err) => next(err))
-    .catch((err) => next(err));
-})
+
+
+
+
+
 
 module.exports = reservationRouter;
