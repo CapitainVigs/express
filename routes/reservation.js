@@ -30,9 +30,20 @@ reservationRouter.route('/')
     }, (err) => next(err))
     .catch((err) => next(err));
 })
+.put((req,res,next) => {
+    console.log('reservation by add')
+    reservation.create(req.body)
+    .then((reservation) => {
+        res.statusCode = 200;
+        res.setHeader('Content-Type', 'application/json');
+        res.json(reservation);
+    }, (err) => next(err))
+    .catch((err) => next(err));
+})
 
 reservationRouter.route('/:idreservation')
 .post((req,res,next) => {
+    console.log('reservation by id')
     reservation.findByIdAndUpdate(req.params.idreservation,req.body)
     .then((reservation) => {
         res.statusCode = 200;
@@ -42,17 +53,6 @@ reservationRouter.route('/:idreservation')
     .catch((err) => next(err));
 })
 
-
-reservationRouter.route('/add')
-.post((req,res,next) => {
-    reservation.create(req.body)
-    .then((reservation) => {
-        res.statusCode = 200;
-        res.setHeader('Content-Type', 'application/json');
-        res.json(reservation);
-    }, (err) => next(err))
-    .catch((err) => next(err));
-})
 
 reservationRouter.route('/:iduser')
 .get((req,res,next) => {
