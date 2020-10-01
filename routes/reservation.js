@@ -31,7 +31,16 @@ reservationRouter.route('/')
     .catch((err) => next(err));
 })
 
-
+reservationRouter.route('/:idreservation')
+.post((req,res,next) => {
+    reservation.findByIdAndUpdate(req.params.idreservation,req.body)
+    .then((reservation) => {
+        res.statusCode = 200;
+        res.setHeader('Content-Type', 'application/json');
+        res.json(reservation);
+    }, (err) => next(err))
+    .catch((err) => next(err));
+})
 
 
 reservationRouter.route('/add')
