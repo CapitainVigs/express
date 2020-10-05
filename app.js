@@ -13,7 +13,7 @@ var coursesRouter = require('./routes/coursesrouter');
 var reservationRouter = require('./routes/reservation');
 var vehiculeRouter = require('./routes/vehicule');
 var userRouter = require('./routes/users');
-
+var forgetRouter = require('./routes/forget');
 
 
 // mongoose connection
@@ -25,7 +25,7 @@ const  authJwt  = require('./routes/authJwt');
 // Moucharafou code 
 const cors = require("cors");
 var corsOptions = {
-  origin: "http://localhost:3000"
+  origin: "*"
 };
 
 
@@ -70,7 +70,7 @@ app.use('/trajet', [authJwt.verifyToken], trajetRouter);
 app.use('/courses', [authJwt.verifyToken],  coursesRouter);
 app.use('/reservation', [authJwt.verifyToken], reservationRouter);
 app.use('/vehicule', [authJwt.verifyToken], vehiculeRouter);
-
+app.use('/forget', forgetRouter);
 
 
 // catch 404 and forward to error handler
