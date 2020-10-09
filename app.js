@@ -16,16 +16,18 @@ var userRouter = require('./routes/users');
 var forgetRouter = require('./routes/forget');
 
 
+
+
 // mongoose connection
 const mongoose = require('mongoose');
 
 const Users = require('./models/users');
-
 const  authJwt  = require('./routes/authJwt'); 
 // Moucharafou code 
+
 const cors = require("cors");
 var corsOptions = {
-  origin: "*"
+  origin: "http://localhost:3000"
 };
 
 
@@ -60,17 +62,19 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.use('/images', express.static(path.join(__dirname, 'images')));
 app.use('/', indexRouter);
-app.use('/users', [authJwt.verifyToken], usersRouter);
+app.use('/users', usersRouter);
 app.use('/login', loginRouter);
 app.use('/register', userRouter);
+app.use('/forget', forgetRouter);
 //app.post('/login',[verifySignUp.checkDuplicateUsernameOrEmail, verifySignUp.checkRolesExisted], loginRouter);
 app.use('/localisation',  localisationRouter);
 app.use('/trajet', [authJwt.verifyToken], trajetRouter);
 app.use('/courses', [authJwt.verifyToken],  coursesRouter);
 app.use('/reservation', [authJwt.verifyToken], reservationRouter);
 app.use('/vehicule', [authJwt.verifyToken], vehiculeRouter);
-app.use('/forget', forgetRouter);
+
 
 
 // catch 404 and forward to error handler

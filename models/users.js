@@ -33,6 +33,12 @@ numero: {
 pays: {
     type: String
 },
+imageName: {
+    type: String
+},
+imageUrl: {
+    type: String
+},
 trajet_actif_id: { type: Schema.Types.ObjectId, ref: 'trajet',default: null }
 },{
     timestamps: true
