@@ -41,7 +41,7 @@ reservationRouter.route('/')
     .catch((err) => next(err));
 })
 
-reservationRouter.route('/:idreservation')
+reservationRouter.route('/findbyid/:idreservation')
 .post((req,res,next) => {
     reservation.findByIdAndUpdate(req.params.idreservation,req.body)
     .then((reservation) => {
