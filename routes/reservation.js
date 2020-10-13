@@ -43,11 +43,10 @@ reservationRouter.route('/')
 
 reservationRouter.route('/:idreservation')
 .post((req,res,next) => {
-    console.log('reservation by id')
     reservation.findByIdAndUpdate(req.params.idreservation,req.body)
     .then((reservation) => {
         res.statusCode = 200;
-        res.setHeader('Content-Type', 'application/json');
+        res.setHeader('Content-Type', 'application/json'); 
         res.json(reservation);
     }, (err) => next(err))
     .catch((err) => next(err));

@@ -129,37 +129,5 @@ userRouter.route('/:id_users')
 
     
 
-userRouter.post("/upload", multer, (req, res, next) => {
-
-    console.log('Bonjour')
-       
-       const file = req.file
-        if(!file){
-            res.json({ success: false, message: 'Password Updated Echec.' });
-        } else {
-        Users.findById(req.body.id_users)
-        .then((user) => {
-            if(user) {
-                console.log(req.body.id_users+ '_'+'PROFILE')
-                const query = { _id: req.body.id_users };
-                const update = {
-                    "$set": {
-                        imageName: user._id+ '_'+'PROFILE',
-                        imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
-                    }
-                  };
-                const options = { returnNewDocument: true };  
-                User.updateOne(query, update, options)
-                .then((msg) => {
-                    if (!msg)
-                    res.json({ success: false, message: 'Password Updated Echec.' });
-                    else
-                        res.json({ success: true, message: 'Password Updated successfully.' });
-            }, (err) => next(err))
-            }
-        }, (err) => next(err))
-    }
-    })
-
 
 module.exports = userRouter;

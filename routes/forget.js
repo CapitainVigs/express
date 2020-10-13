@@ -22,43 +22,25 @@ var transporter = nodemailer.createTransport({
 });
 
 forgetRouter.route('/')
-    .get((req, res, next) => {
-        ResetPassword.find({})
-            .then((resetPassword) => {
-                res.statusCode = 200;
-                res.setHeader('Content-Type', 'application/json');
-                res.json(resetPassword);
-            }, (err) => next(err))
-            .catch((err) => next(err));
-    })
-
-
-forgetRouter.route('/reset-password')
-    .post((req, res, next) => {
+.post((req, res, next) => {
         const email = req.body.email
-        console.log(email)
         User.findOne(
             { email: email },// vérifier si l'adresse email envoyée par le client est présente dans la base de données(valid)
-
-        )
-
-            .then((user) => {
-                console.log(user)
+        ).then((user) => {
                 if (!user) {
-                    return throwFailed(res, 'Aucun utilisateur trouvé avec cette adresse e-mail.')
+                    return res.json({ message:'Aucun utilisateur trouvé avec cette adresse e-mail.'});
                 }
-                ResetPassword.findOne({
-                    where: { userId: user._id, status: 0 },
-                }).then((resetPassword) => {
+                ResetPassword.findOne({ userId: user._id, status: 0 })
+                .then((resetPassword) => {
                     if (resetPassword)
-                        resetPassword.destroy({ where: { id: resetPassword.id } })
+                        resetPassword.deleteOne( { userId: user._id } )
                     //token = crypto.randomBytes().toString('hex')// création du token à envoyer au formulaire de mot de passe oublié (react)
                     token = Math.floor(Math.random() * Math.floor(100000));
 
                     ResetPassword.create({
                         userId: user._id,
                         resetPasswordToken: token,
-                        expire: moment.utc().add(86400, 'seconds'),
+                        expire: moment().add(1, 'days'),
                         status: 0,
                     }).then(function (item) {
                         if (!item)
@@ -76,9 +58,9 @@ forgetRouter.route('/reset-password')
 
                         let mailSent = transporter.sendMail(mailOptions)// envoi de courrier à l'utilisateur où il peut réinitialiser le mot de passe.L'identifiant de l'utilisateur et le jeton généré sont envoyés en tant que paramètres dans un lien
                         if (mailSent) {
-                            return res.json({  success: true, message: 'Vérifiez votre messagerie pour réinitialiser votre mot de passe.' })
+                            return res.json({  success: true, token: token, message: 'Vérifiez votre messagerie pour réinitialiser votre mot de passe.' })
                         } else {
-                            return throwFailed(error, 'Incapable denvoyer des emails.');
+                            return res.json({  success: false, message:'Incapable denvoyer des emails.'});
                         }
                     })
                 })
@@ -86,17 +68,19 @@ forgetRouter.route('/reset-password')
             });
 
     })
-
-forgetRouter.post('/verify-token', (req, res) => {
+.put((req, res,next) => {
     const token = req.body.resetPasswordToken
-
-    ResetPassword.findOne({ resetPasswordToken: token })
+    ResetPassword.findOne({ resetPasswordToken: token, status: 0 })
         .then((resetPassword) => {
 
             if (!resetPassword) {
-                return throwFailed(res, 'Token invalide.')
+                return res.status(404).send({
+                    message: "Token invalid !",
+                    erreur: 0
+                });
             }
-
+                      
+            
             if (resetPassword) {
                 return res.status(200).send({
                     message: "Token valid !",
@@ -114,26 +98,38 @@ forgetRouter.post('/nouveau-password', (req, res) => {
     ResetPassword.findOne( { userId: userId, status: 0 } )
         .then( (resetPassword) => {
             if (!resetPassword) {
-                return throwFailed(res, 'Invalid or expired reset token.')
+                res.json({ message: 'Invalid or expired reset token.' });
+                
             }
-            const userId = resetPassword.userId
+            
+            
+            const query = { _id: resetPassword.userId };
+            const update = {
+                "$set": {
+                    password: bcrypt.hashSync(req.body.password, 8)
+                }
+              };
+            const options = { returnNewDocument: true };  
+            User.updateOne(query, update, options)
 
-
-            User.update({
-                password: bcrypt.hashSync(req.body.password, 8),
-            },
-                { where: { _id: userId } }
-            ).
-                then(() => {
-                    ResetPassword.update({
-                        status: 1
-                    }, { where: { _id: resetPassword._id } }).
-                        then((msg) => {
+            .then((data) => {
+                const query = { _id: resetPassword._id };
+                const update = {
+                    "$set": {
+                         status: 1 
+                    }
+                  };
+                    const options = { returnNewDocument: true }; 
+                   if(data) {
+                    ResetPassword.updateOne(query, update, options )
+                    .then((msg) => {
                             if (!msg)
-                                throw err
+                            res.json({ success: false, message: 'Password Updated Echec.' });
                             else
-                                res.json({ success: true, message: 'Password Updated successfully.' })
-                        }, (err) => next(err))
+                                res.json({ success: true, message: 'Password Updated successfully.' });
+                    }, (err) => next(err))
+                   } 
+                
 
 
                 }, (err) => next(err));
@@ -144,10 +140,10 @@ forgetRouter.post('/nouveau-password', (req, res) => {
 forgetRouter.post('/reset', function (req, res) {
     const email = req.body.email
     User.findOne({ email: email })
-        .then(function (user) {
-            console.log(user)
+        .then( (user) => {
+           
             if (!user) {
-                return throwFailed(res, 'Aucun utilisateur trouvé avec cette adresse e-mail.')
+                res.json({ message: 'Aucun utilisateur trouvé avec cette adresse e-mail.' });
             }
         }, (err) => next(err))
 })

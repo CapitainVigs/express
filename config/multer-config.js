@@ -13,9 +13,10 @@ const storage = multer.diskStorage({
     console.log('Dossier creerupload')
   },
   filename: (req, file, callback) => {
-    const name = file.originalname.split(' ').join('_');
+ 
+    const name = req.body.id_users+ '_'+'PROFILE';
     const extension = MIME_TYPES[file.mimetype];
-    callback(null, name + Date.now() + '.' + extension);
+    callback(null, name  + '.' + extension);
   }
 });
 

@@ -14,7 +14,7 @@ var reservationRouter = require('./routes/reservation');
 var vehiculeRouter = require('./routes/vehicule');
 var userRouter = require('./routes/users');
 var forgetRouter = require('./routes/forget');
-
+var uploadRouter = require('./routes/upload');
 
 
 
@@ -74,7 +74,7 @@ app.use('/trajet', [authJwt.verifyToken], trajetRouter);
 app.use('/courses', [authJwt.verifyToken],  coursesRouter);
 app.use('/reservation', [authJwt.verifyToken], reservationRouter);
 app.use('/vehicule', [authJwt.verifyToken], vehiculeRouter);
-
+app.use('/images', uploadRouter);
 
 
 // catch 404 and forward to error handler
