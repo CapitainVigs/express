@@ -41,18 +41,6 @@ reservationRouter.route('/')
     .catch((err) => next(err));
 })
 
-reservationRouter.route('/findbyid/:idreservation')
-.post((req,res,next) => {
-    reservation.findByIdAndUpdate(req.params.idreservation,req.body)
-    .then((reservation) => {
-        res.statusCode = 200;
-        res.setHeader('Content-Type', 'application/json'); 
-        res.json(reservation);
-    }, (err) => next(err))
-    .catch((err) => next(err));
-})
-
-
 reservationRouter.route('/:iduser')
 .get((req,res,next) => {
     reservation.find({iduser:req.params.iduser}).populate( {path:'trajet', populate:{path:'depart'}}).populate( {path:'trajet', populate:{path:'arrivee'}})
@@ -64,6 +52,18 @@ reservationRouter.route('/:iduser')
     .catch((err) => next(err));
 })
 //reservation trajet id sent from iduser var
+
+
+reservationRouter.route('/findbyid/:idreservation')
+.post((req,res,next) => {
+    reservation.findByIdAndUpdate(req.params.idreservation,req.body)
+    .then((reservation) => {
+        res.statusCode = 200;
+        res.setHeader('Content-Type', 'application/json'); 
+        res.json(reservation);
+    }, (err) => next(err))
+    .catch((err) => next(err));
+})
 
 
 
