@@ -25,11 +25,12 @@ userRouter.route('/')
     .catch((err) => next(err));
 })
 .post((req, res, next) => {
-    Users.find({email:req.body.email})
+    Users.find({email:req.body.email},'_id')
             .then((user) => {
-                if(user!=null){
+                if(user[0]!=null){
                     res.statusCode = 401;
-                    res.end('Vous etes deja inscrit, veuillez vous connecter');
+                    console.log('Vous etes deja inscrit, veuillez vous connecter',user);
+                    res.json(null);
                 }else{
                     Users.create(
                         {
