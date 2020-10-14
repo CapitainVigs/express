@@ -25,27 +25,28 @@ userRouter.route('/')
     .catch((err) => next(err));
 })
 .post((req, res, next) => {
-    Users.create(
-        {
-            name: req.body.name,
-            email: req.body.email,
-            password: bcrypt.hashSync(req.body.password, 8),
-            nom: req.body.nom,
-            prenoms: req.body.prenoms,
-            profession: req.body.profession,
-            ville: req.body.ville,
-            numero: req.body.numero,
-            pays: req.body.pays,
-
-        }
-    )
-        .then((dish) => {
-            console.log('User Created ', dish);
-            res.statusCode = 200;
-            res.setHeader('Content-Type', 'application/json');
-            res.json(dish);
-        }, (err) => next(err))
-        .catch((err) => next(err));
+    Users.find({email:req.body.email})
+            .then((user) => {
+                if(user!=null){
+                    res.statusCode = 401;
+                    res.end('Vous etes deja inscrit, veuillez vous connecter');
+                }else{
+                    Users.create(
+                        {
+                            email: req.body.email,
+                            password: bcrypt.hashSync(req.body.password, 8),
+                        }
+                    ).then((user) => {
+                            console.log('User Created ', user);
+                            res.statusCode = 200;
+                            res.setHeader('Content-Type', 'application/json');
+                            res.json(user);
+                        }, (err) => next(err))
+                }
+               
+            }, (err) => next(err))
+            .catch((err) => next(err));
+   
 })
 .put((req, res, next) => {
     res.statusCode = 403;

@@ -15,6 +15,8 @@ var vehiculeRouter = require('./routes/vehicule');
 var userRouter = require('./routes/users');
 var forgetRouter = require('./routes/forget');
 var uploadRouter = require('./routes/upload');
+var registerRouter = require('./routes/register');
+
 
 
 
@@ -66,7 +68,7 @@ app.use('/images', express.static(path.join(__dirname, 'images')));
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/login', loginRouter);
-app.use('/register', userRouter);
+app.use('/register', registerRouter);
 app.use('/forget', forgetRouter);
 //app.post('/login',[verifySignUp.checkDuplicateUsernameOrEmail, verifySignUp.checkRolesExisted], loginRouter);
 app.use('/localisation',  localisationRouter);
