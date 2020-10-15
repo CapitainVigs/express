@@ -32,7 +32,6 @@ loginRouter.route('/')
         
                 if (!passwordIsValid) {
                     return res.status(401).send({
-                        accessToken: null,
                         message: "Mot de passe incorrect!"
                     });
                 }
