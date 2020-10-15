@@ -109,6 +109,7 @@ userRouter.route('/:id_users')
             .then((user) => {
                 if (user != null) {
                     user.trajet_actif_id = req.body.trajet_id
+                    user.save()
                 }
                 else {
                     err = new Error('User' + req.params.id_users + ' not found');

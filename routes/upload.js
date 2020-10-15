@@ -30,7 +30,7 @@ uploadRouter.post("/upload", multer, (req, res, next) => {
                 const query = { _id: req.body.id_users };
                 const update = {
                     "$set": {
-                        imageName: user._id+ '_'+'PROFILE'+'.'+extension,
+                        imageName: 'PROFILE'+ '_'+ Date.now()+'.'+extension,
                         imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
                     }
                   };
@@ -38,9 +38,9 @@ uploadRouter.post("/upload", multer, (req, res, next) => {
                 Users.updateOne(query, update, options)
                 .then((msg) => {
                     if (!msg)
-                    res.json({ success: false, message: 'Password Updated Echec.' });
+                    res.json({ success: false, message: 'Echec upload image.' });
                     else
-                        res.json({ success: true, message: 'Password Updated successfully.' });
+                        res.json({ success: true, message: 'successfully upload image.' });
             }, (err) => next(err))
             }
         }, (err) => next(err))

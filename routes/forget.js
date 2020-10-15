@@ -15,6 +15,7 @@ var moment = require('moment');
 
 var transporter = nodemailer.createTransport({
     service: 'gmail',
+    host: 'smtp.gmail.com',
     port: 587,
     secure: false, // upgrade later with STARTTLS
     auth: {
@@ -30,7 +31,7 @@ forgetRouter.route('/')
             { email: email },// vérifier si l'adresse email envoyée par le client est présente dans la base de données(valid)
         ).then((user) => {
                 if (!user) {
-                    return res.json({ message:'Aucun utilisateur trouvé avec cette adresse e-mail.'});
+                    return res.json({ successEmail: false, message: 'Aucun utilisateur trouvé avec cette adresse e-mail.' });
                 }
                 ResetPassword.findOne({ userId: user._id, status: 0 })
                 .then((resetPassword) => {
@@ -74,7 +75,7 @@ forgetRouter.route('/')
     const token = req.body.resetPasswordToken
     ResetPassword.findOne({ resetPasswordToken: token, status: 0 })
         .then((resetPassword) => {
-
+             
             if (!resetPassword) {
                 return res.status(404).send({
                     message: "Token invalid !",
@@ -84,11 +85,21 @@ forgetRouter.route('/')
                       
             
             if (resetPassword) {
-                return res.status(200).send({
-                    message: "Token valid !",
-                    bon: 1,
-                    userId: resetPassword.userId
-                });
+                const current = moment().format();
+                if(current > resetPassword.expire) {
+                    return res.status(200).send({
+                        message: "Token valid !",
+                        bon: 0,
+                        userId: resetPassword.userId
+                    });
+                } else {
+                    return res.status(200).send({
+                        message: "Token valid !",
+                        bon: 1,
+                        userId: resetPassword.userId
+                    });
+                }
+                
             }
         }, (err) => next(err))
 });
@@ -100,7 +111,7 @@ forgetRouter.post('/nouveau-password', (req, res) => {
     ResetPassword.findOne( { userId: userId, status: 0 } )
         .then( (resetPassword) => {
             if (!resetPassword) {
-                res.json({ message: 'Invalid or expired reset token.' });
+                res.json({ successToken: false, message: 'Invalid or expired reset token.' });
                 
             }
             
