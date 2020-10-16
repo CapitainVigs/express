@@ -30,6 +30,7 @@ forgetRouter.route('/')
         User.findOne(
             { email: email },// vérifier si l'adresse email envoyée par le client est présente dans la base de données(valid)
         ).then((user) => {
+            console.log('pass',user);
                 if (!user) {
                     return res.json({ successEmail: false, message: 'Aucun utilisateur trouvé avec cette adresse e-mail.' });
                 }

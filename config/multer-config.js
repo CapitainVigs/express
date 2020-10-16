@@ -1,5 +1,5 @@
 const multer = require('multer');
-
+var upload = multer({ dest: 'images/' })
 
 const MIME_TYPES = {
   'image/jpg': 'jpg',
@@ -13,8 +13,8 @@ const storage = multer.diskStorage({
     console.log('Dossier creerupload')
   },
   filename: (req, file, callback) => {
- 
-    const name = 'PROFILE';
+    console.log(req.params.id_user)
+    const name = req.params.id_user+'_'+'profile';
     const extension = MIME_TYPES[file.mimetype];
     callback(null, name  + '_'+ Date.now()+'.' + extension);
   }
