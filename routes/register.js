@@ -25,6 +25,7 @@ userRouter.route('/')
     .catch((err) => next(err));
 })
 .post((req, res, next) => {
+    console.log('Inscription en cours');
     Users.find({email:req.body.email},'_id')
             .then((user) => {
                 if(user[0]!=null){
@@ -32,6 +33,7 @@ userRouter.route('/')
                     console.log('Vous etes deja inscrit, veuillez vous connecter',user);
                     res.json(null);
                 }else{
+                    console.log('creation en cours');
                     Users.create(
                         {
                             email: req.body.email,
