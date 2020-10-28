@@ -53,6 +53,26 @@ reservationRouter.route('/:iduser')
     }, (err) => next(err))
     .catch((err) => next(err));
 })
+
+reservationRouter.route('/:idreservation')
+.put((req,res,next) => {
+    reservation.findById(req.params.idreservation)
+    .then((reservation) => {
+        if(reservation){
+            reservation.etat = req.body.etat;
+            reservation.save();
+            res.statusCode = 200;
+            res.setHeader('Content-Type', 'application/json');
+            res.json({message:"Operation effectuée"});
+        }else{
+        res.statusCode = 404;
+        res.setHeader('Content-Type', 'application/json');
+        console.log(reservation);
+        res.json(reservation);
+        }
+    }, (err) => next(err))
+    .catch((err) => next(err));
+})
 //reservation trajet id sent from iduser var
 
 
