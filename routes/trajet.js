@@ -23,12 +23,12 @@ trajetRouter.route('/')
     .catch((err) => next(err));
 })
 .post((req, res, next) => {
-    if(req.body.date< moment().format()){
-        err = new Error('Erreur, date '+req.body.date +' est passée déjà');
+    if(moment(req.body.date).isBefore(moment(new Date()))){
+        err = new Error('Erreur, date '+req.body.date +' est antérieure à la date actuelle');
         err.status = 404;
         return next(err);
     }
-    
+
     trajet.create(req.body)
     .then((trajet) => {
 

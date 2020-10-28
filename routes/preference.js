@@ -26,7 +26,7 @@ preferenceRouter.route('/').get((req, res) => {
 
 
 // Get all preference by user
-preferenceRouter.route('/:id').get((req, res,next) => {
+preferenceRouter.route('/user/:id').get((req, res,next) => {
     preference.find({iduser:req.params.id}, (error, data) => {
         if (error) {
             return next(error)
@@ -54,10 +54,11 @@ preferenceRouter.route('/').post((req, res, next) => {
 
 
 // Get single véhivule
-preferenceRouter.route('/:id').get((req, res) => {
-    preference.findById(req.params.id, (error, data) => {
+preferenceRouter.route('/:id').get((req, res,next) => {
+        preference.find({iduser:req.params.id}, (error, data) => {
         if (error) {
-            return next(error)
+            console.log(error);
+            return next(error);
         } else {
             res.statusCode = 200;
             res.setHeader('Content-Type', 'application/json');
@@ -69,7 +70,7 @@ preferenceRouter.route('/:id').get((req, res) => {
 
 // Update véhivule
 preferenceRouter.route('/:id').put((req, res, next) => {
-    preference.findByIdAndUpdate(req.params.id, {
+    preference.updateOne(req.params.id, (error, data) => {
         $set: req.body
     }, (error, data) => {
         if (error) {
