@@ -22,7 +22,7 @@ loginRouter.route('/')
         Users.findOne({ email: req.body.email })
             .then((user) => {
                 if (!user) {
-                    return res.status(404).send({ message: "Utilisateur non trouvé." });
+                    return res.status(404).send({ message: "Utilisateur non trouvé. veuillez vous inscrire" });
                   }
         
                 var passwordIsValid = bcrypt.compareSync(
@@ -32,7 +32,7 @@ loginRouter.route('/')
         
                 if (!passwordIsValid) {
                     return res.status(401).send({
-                        message: "Mot de passe incorrect!"
+                        message: "Mot de passe incorrect!!!"
                     });
                 }
         

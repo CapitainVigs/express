@@ -5,6 +5,7 @@ const mongoose = require('mongoose');
 
 const trajet = require('../models/trajet');
 const Users = require('../models/users');
+var moment = require('moment');
 
 const trajetRouter = express.Router();
 
@@ -22,6 +23,12 @@ trajetRouter.route('/')
     .catch((err) => next(err));
 })
 .post((req, res, next) => {
+    if(req.body.date< moment().format()){
+        err = new Error('Erreur, date '+req.body.date +' est passée déjà');
+        err.status = 404;
+        return next(err);
+    }
+    
     trajet.create(req.body)
     .then((trajet) => {
 
@@ -38,7 +45,7 @@ trajetRouter.route('/')
             }
         })
 
-        console.log('Trajet Created ', trajet);
+        console.log('Trajet crée ', trajet);
         res.statusCode = 200;
         res.setHeader('Content-Type', 'application/json');
         res.json(trajet);

@@ -26,7 +26,7 @@ preferenceRouter.route('/').get((req, res) => {
 
 
 // Get all preference by user
-preferenceRouter.route('/user/:id').get((req, res,next) => {
+preferenceRouter.route('/:id').get((req, res,next) => {
     preference.find({iduser:req.params.id}, (error, data) => {
         if (error) {
             return next(error)

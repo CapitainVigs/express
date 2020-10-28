@@ -3,11 +3,11 @@ const Schema = mongoose.Schema;
 
 const preferenceSchema = new Schema({
    fume: {
-    type: number,
+    type: Number,
     default: 0
    },
    music: {
-    type: number,
+    type: Number,
     default: 0
    },  
    iduser: { 
