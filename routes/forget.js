@@ -17,7 +17,7 @@ var transporter = nodemailer.createTransport({
     service: 'gmail',
     host: 'smtp.gmail.com',
     port: 465,
-    secure: false, // upgrade later with STARTTLS
+    secure: true, // upgrade later with STARTTLS
     auth: {
         user: 'noreplyautostop@gmail.com',
         pass: 'azertyuiop/'
