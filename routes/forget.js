@@ -20,7 +20,7 @@ var transporter = nodemailer.createTransport({
     secure: true, // upgrade later with STARTTLS
     auth: {
         user: 'noreplyautostop@gmail.com',
-        pass: 'azertyuiop/'
+        pass: 'xidijcqhmxgxznxf'
     }
 });
 
