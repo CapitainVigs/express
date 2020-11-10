@@ -26,6 +26,9 @@ const vehiculeSchema = new Schema({
         type: Number,
         min: 0
     },
+    typeVehicule: {
+        type: Number
+    },
     iduser: { type: Schema.Types.ObjectId, ref: 'User' }
 
 }, {
