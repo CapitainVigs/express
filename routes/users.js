@@ -99,7 +99,7 @@ userRouter.route('/:id_users')
                 else {
                     err = new Error('User' + req.params.id_users + ' not found');
                     err.status = 404;
-                    return next(err);
+                    res.json(err);
                 }
             }, (err) => next(err))
             .catch((err) => next(err));
