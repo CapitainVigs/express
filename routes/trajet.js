@@ -74,12 +74,14 @@ trajetRouter.route('/')
 
 trajetRouter.route('/:idtrajet')
 .post((req, res, next) => {
-    trajet.create(req.body)
+    console.log('ici id trajet : '+req.params.idtrajet);
+    trajet.find(req.body).populate('arrivee').populate('depart')
     .then((trajet) => {
-        console.log('Trajet Created ', trajet);
         res.statusCode = 200;
         res.setHeader('Content-Type', 'application/json');
         res.json(trajet);
+        console.log('trajet trouvé');
+        console.log(trajet);
     }, (err) => next(err))
     .catch((err) => next(err));
 })
@@ -114,13 +116,15 @@ trajetRouter.route('/:idtrajet')
 })
 
 
-trajetRouter.route('/find/')
+trajetRouter.route('/find')
 .post((req, res, next) => {
+    console.log('ici find');
     trajet.find(req.body).populate('arrivee').populate('depart')
     .then((trajet) => {
         res.statusCode = 200;
         res.setHeader('Content-Type', 'application/json');
         res.json(trajet);
+        console.log(trajet);
     }, (err) => next(err))
     .catch((err) => next(err));
 })

@@ -15,12 +15,12 @@ var moment = require('moment');
 
 var transporter = nodemailer.createTransport({
     service: 'gmail',
-    host: '45.153.186.189',
-    port: 465,
-    secure: true, // upgrade later with STARTTLS
+    host: 'smtp.gmail.com',
+    port: 587,
+    secure: false, // upgrade later with STARTTLS
     auth: {
         user: 'noreplyautostop@gmail.com',
-        pass: 'xidijcqhmxgxznxf'
+        pass: 'azertyuiop/'
     }
 });
 
