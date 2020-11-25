@@ -32,7 +32,7 @@ preferenceRouter.route('/:id').get((req, res,next) => {
             return next(error)
         } else {
            // if(data==null)
-            console.log(data[0]);
+            console.log(data);
             if(data[0]==undefined){
                 res.statusCode = 401;
                 res.setHeader('Content-Type', 'application/json');

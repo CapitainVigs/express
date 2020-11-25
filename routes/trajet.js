@@ -52,7 +52,7 @@ trajetRouter.route('/')
     }, (err) => next(err))
     .catch((err) => next(err));
 }).put((req, res, next) => {
-    trajet.find(req.body).populate('arrivee').populate('depart')
+    trajet.find(req.body).populate('arrivee').populate('depart').populate('iduser')
     .then((trajet) => {
         res.statusCode = 200;
         res.setHeader('Content-Type', 'application/json');
