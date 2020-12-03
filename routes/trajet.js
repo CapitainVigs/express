@@ -11,7 +11,7 @@ const trajetRouter = express.Router();
 
 trajetRouter.use(bodyParser.json());
 
-
+ 
 trajetRouter.route('/')
 .get((req,res,next) => {
     trajet.find( {}).populate('arrivee').populate('depart')
@@ -52,8 +52,9 @@ trajetRouter.route('/')
     }, (err) => next(err))
     .catch((err) => next(err));
 }).put((req, res, next) => {
-    trajet.find(req.body).populate('arrivee').populate('depart').populate('iduser')
+    trajet.find(req.body).populate('arrivee').populate('depart').populate('iduser').populate('idvehicule')
     .then((trajet) => {
+        console.log(trajet);
         res.statusCode = 200;
         res.setHeader('Content-Type', 'application/json');
         res.json(trajet);

@@ -26,6 +26,10 @@ const vehiculeSchema = new Schema({
         type: Number,
         min: 0
     },
+    etat: {
+        type: Number,
+        default:0
+    },
     typeVehicule: {
         type: Number
     },
