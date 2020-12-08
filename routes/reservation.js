@@ -22,7 +22,7 @@ reservationRouter.route('/')
     .catch((err) => next(err));
 })
 .post((req,res,next) => {
-    reservation.find(req.body).populate( {path:'trajet', populate:{path:'depart'}}).populate( {path:'trajet', populate:{path:'arrivee'}}).populate('iduser')
+    reservation.find(req.body).populate( {path:'trajet', populate:{path:'depart'}}).populate( {path:'trajet', populate:{path:'arrivee'}}).populate( {path:'trajet', populate:{path:'iduser'}})
     .then((reservation) => {
         res.statusCode = 200;
         res.setHeader('Content-Type', 'application/json');
@@ -45,9 +45,10 @@ reservationRouter.route('/')
 
 reservationRouter.route('/:iduser')
 .get((req,res,next) => {
-    reservation.find({iduser:req.params.iduser}).sort({_id: -1}).limit(3).populate( {path:'trajet', populate:{path:'depart'}}).populate( {path:'trajet', populate:{path:'arrivee'}})
+    reservation.find({iduser:req.params.iduser}).sort({_id: -1}).limit(3).populate( {path:'trajet', populate:{path:'depart'}}).populate( {path:'trajet', populate:{path:'arrivee'}}).populate( {path:'trajet', populate:{path:'iduser'}}).populate( {path:'trajet', populate:{path:'idvehicule'}})
     .then((reservation) => {
         res.statusCode = 200;
+        
         res.setHeader('Content-Type', 'application/json');
         res.json(reservation);
     }, (err) => next(err))
