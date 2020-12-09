@@ -22,7 +22,7 @@ reservationRouter.route('/')
     .catch((err) => next(err));
 })
 .post((req,res,next) => {
-    reservation.find(req.body).populate( {path:'trajet', populate:{path:'depart'}}).populate( {path:'trajet', populate:{path:'arrivee'}}).populate( {path:'trajet', populate:{path:'iduser'}})
+    reservation.find(req.body).populate( {path:'trajet', populate:{path:'depart'}}).populate( {path:'trajet', populate:{path:'arrivee'}}).populate('iduser')
     .then((reservation) => {
         res.statusCode = 200;
         res.setHeader('Content-Type', 'application/json');
