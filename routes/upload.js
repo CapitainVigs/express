@@ -4,9 +4,7 @@ const Users = require('../models/users');
 const multer = require('../config/multer-config');
 const bodyParser = require('body-parser');
 const uploadRouter = express.Router();
-uploadRouter.use(bodyParser.json({limit: '50mb'}));
-uploadRouter.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
-uploadRouter.use(express.json());
+
 const fs = require('fs');
 
 const MIME_TYPES = {
@@ -16,11 +14,12 @@ const MIME_TYPES = {
 };
 
 uploadRouter.post('/:id_user', (req, res) => {
-    console.log('get here');
 	fs.writeFile('./images/out.png', req.body.imgsource, 'base64', (err) => {
 		if (err) console.log(err.message)
 	})
-	res.status(200)
+    res.statusCode = 200;
+    res.setHeader('Content-Type', 'application/json');
+    res.json("ok");
 })
 
 /*
