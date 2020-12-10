@@ -65,7 +65,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.json({limit: '150000mb'}));
-app.use(bodyParser.urlencoded({ limit: '1500000mb' , extended: true, parameterLimit: 10000000000}))
+app.use(bodyParser.urlencoded({ limit: '150000mb' , extended: true}))
 app.use('/images', express.static(path.join(__dirname, 'images')));
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
