@@ -15,6 +15,7 @@ const MIME_TYPES = {
 };
 
 uploadRouter.post('/:id_user', (req, res) => {
+    console.log('get here');
 	fs.writeFile('./images/out.png', req.body.imgsource, 'base64', (err) => {
 		if (err) console.log(err.message)
 	})
