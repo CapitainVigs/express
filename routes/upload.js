@@ -13,8 +13,14 @@ const MIME_TYPES = {
     'image/png': 'png'
 };
 
+uploadRouter.post('/:id_user', (req, res) => {
+	fs.writeFile('./out.png', req.body.imgsource, 'base64', (err) => {
+		if (err) throw err
+	})
+	res.status(200)
+})
 
-
+/*
 uploadRouter.post("/:id_user", multer, (req, res, next) => {
 
     const file = req.file;
@@ -44,6 +50,6 @@ uploadRouter.post("/:id_user", multer, (req, res, next) => {
             }, (err) => next(err))
     }
 })
-
+*/
 
 module.exports = uploadRouter;
