@@ -1,8 +1,11 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const Users = require('../models/users');
-const multer = require('../config/multer-config')
+const multer = require('../config/multer-config');
+const bodyParser = require('body-parser');
 const uploadRouter = express.Router();
+uploadRouter.use(bodyParser.json({limit: '150000mb'}));
+uploadRouter.use(bodyParser.urlencoded({ limit: '150000mb' , extended: true}))
 const fs = require('fs');
 
 const MIME_TYPES = {
