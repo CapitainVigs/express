@@ -77,7 +77,7 @@ app.use('/trajet', [authJwt.verifyToken], trajetRouter);
 app.use('/courses', [authJwt.verifyToken],  coursesRouter);
 app.use('/reservation', [authJwt.verifyToken], reservationRouter);
 app.use('/vehicule', [authJwt.verifyToken], vehiculeRouter);
-app.use('/images', uploadRouter);
+app.use('/imageprofile', uploadRouter);
 app.use('/preference', preferenceRouter);
 
 
