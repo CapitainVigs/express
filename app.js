@@ -64,7 +64,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(bodyParser.json({ limit: '150MB' }))
+app.use(bodyParser.json({limit: '150mb'}));
+app.use(bodyParser.urlencoded({ limit: '150mb' , extended: true, parameterLimit: 1000000}))
 app.use('/images', express.static(path.join(__dirname, 'images')));
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
@@ -77,7 +78,7 @@ app.use('/trajet', [authJwt.verifyToken], trajetRouter);
 app.use('/courses', [authJwt.verifyToken],  coursesRouter);
 app.use('/reservation', [authJwt.verifyToken], reservationRouter);
 app.use('/vehicule', [authJwt.verifyToken], vehiculeRouter);
-app.use('/imageprofile', uploadRouter);
+app.use('/imageprofile',[authJwt.verifyToken], uploadRouter);
 app.use('/preference', preferenceRouter);
 
 
