@@ -23,7 +23,10 @@ const trajetSchema = new Schema({
     default: 0
    },
    iduser: { type: Schema.Types.ObjectId, ref: 'User' },
-   idvehicule:{ type: Schema.Types.ObjectId, ref: 'vehicule' }
+   idvehicule:{ type: Schema.Types.ObjectId, ref: 'vehicule' },
+   lieu:{
+    type: String
+   }
 }
 );
 

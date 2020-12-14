@@ -14,12 +14,13 @@ const MIME_TYPES = {
 };
 
 uploadRouter.post('/:id_user', (req, res) => {
-    const filename='./images/'+req.params.id_users+Date.now()+'.png'
+    const filename='./images/'+req.params.id_user+Date.now()+'.png'
 	fs.writeFile(filename, req.body.imgsource, 'base64', (err) => {
 		if (err) console.log(err.message)
 	}).then(
         users.findByIdAndUpdate(req.params.id_users,{ imageUrl: filename})
-    )
+        
+    ).then(console.log('update photo name done'));
     res.statusCode = 200;
     res.setHeader('Content-Type', 'application/json');
     res.json({success: true});
