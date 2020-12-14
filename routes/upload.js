@@ -14,16 +14,28 @@ const MIME_TYPES = {
 };
 
 uploadRouter.post('/:id_user', (req, res) => {
-    const filename='./images/'+req.params.id_user+'_'+Date.now()+'.png'
+    const filename='./images/'+req.params.id_user+'_'+Date.now()+'.png';
+    const update = {
+        "$set": {
+          "imageUrl": filename
+        }
+      };
 	fs.writeFile(filename, req.body.imgsource, 'base64', (err) => {
 		if (err) console.log(err.message)
 	}).then(
-        users.findByIdAndUpdate(req.params.id_user,{ imageUrl: filename})
-        
-    ).then(console.log('update photo name done'));
-    res.statusCode = 200;
-    res.setHeader('Content-Type', 'application/json');
-    res.json({success: true});
+        users.findByIdAndUpdate({_id:req.params.id_user},update,{ returnNewDocument: true })    
+    ).then(updatedDocument => {
+        if(updatedDocument) {
+          console.log(`Successfully updated document: ${updatedDocument}.`)
+        } else {
+          console.log("No document matches the provided query.")
+        }
+        res.statusCode = 200;
+        res.setHeader('Content-Type', 'application/json');
+        res.json(updatedDocument);
+      })
+      .catch(err => console.error(`Failed to find and update document: ${err}`))
+  
 })
 
 /*
