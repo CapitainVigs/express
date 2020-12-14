@@ -21,7 +21,7 @@ uploadRouter.post('/:id_user', (req, res) => {
         }
       };
 	fs.writeFile(filename, req.body.imgsource, 'base64', (err) => {
-		if (err) console.log(err.message)
+		if (err) console.error(`Failed to find and update document: ${err}`)
 	}).then(
         users.findByIdAndUpdate({_id:req.params.id_user},update,{ returnNewDocument: true })    
     ).then(updatedDocument => {
