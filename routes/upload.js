@@ -7,9 +7,9 @@ const uploadRouter = express.Router();
 const fs = require('fs');
 
 uploadRouter.post('/:id_user', (req, res) => {
-    const filename='./images/'+req.params.id_user+'_'+Date.now()+'.png';
+    const filename=req.params.id_user+'_'+Date.now()+'.png';
       console.log('file name is '+filename);
-      users.findByIdAndUpdate(req.params.id_user,{ imageUrl: filename}, 
+      Users.findByIdAndUpdate(req.params.id_user,{ imageUrl: filename}, 
                     function (err, docs) { 
             if (err){ 
             console.log(err) 
